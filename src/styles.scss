@@ -41,12 +41,25 @@ body {
   margin-right: auto;
 }
 
+.header__buttons {
+  display: flex;
+  gap: 30px;
+}
+
 a {
   color: inherit;
 
   &:hover {
     color: var(--key-color-dark);
   }
+}
+
+.favoritesLink {
+  display: none;
+}
+
+.active {
+  display: inline-block;
 }
 
 h1,
@@ -120,11 +133,11 @@ img {
   }
 }
 
-.cart {
+.cart, .favoritesLink {
   position: relative;
 }
 
-.cartCounter {
+.cartCounter, .favoritesCounter {
   position: absolute;
   right: -21px;
   top: -10px;

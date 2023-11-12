@@ -1,9 +1,10 @@
-import { Component } from '../component';
-import { ProductList } from '../productList/productList';
-import { formatPrice } from '../../utils/helpers';
-import { ProductData } from 'types';
+import {Component} from '../component';
+import {ProductList} from '../productList/productList';
+import {formatPrice} from '../../utils/helpers';
+import {ProductData} from 'types';
 import html from './productDetail.tpl.html';
-import { cartService } from '../../services/cart.service';
+import {cartService} from '../../services/cart.service';
+import {favoriteService} from "../../services/favorite.service";
 
 class ProductDetail extends Component {
   more: ProductList;
@@ -25,13 +26,15 @@ class ProductDetail extends Component {
 
     if (!this.product) return;
 
-    const { id, src, name, description, salePriceU } = this.product;
+    const {id, src, name, description, salePriceU} = this.product;
 
     this.view.photo.setAttribute('src', src);
     this.view.title.innerText = name;
     this.view.description.innerText = description;
     this.view.price.innerText = formatPrice(salePriceU);
     this.view.btnBuy.onclick = this._addToCart.bind(this);
+    this.view.btnFav.onclick = this._toggleFavorites.bind(this);
+    await this._isFavorite();
 
     const isInCart = await cartService.isInCart(this.product);
 
@@ -48,6 +51,26 @@ class ProductDetail extends Component {
       .then((products) => {
         this.more.update(products);
       });
+  }
+
+  private async _toggleFavorites() {
+    if (!this.product) return;
+
+    await favoriteService.toggleProducts(this.product)
+    await this._isFavorite()
+  }
+
+  private async _isFavorite() {
+    const favorites = await favoriteService.getProducts()
+    const isFavorite = favorites.some((item) => item.brandId === this.product?.brandId);
+
+    if (isFavorite) {
+      this.view.favSvg.classList.add('active')
+      this.view.noFavSvg.classList.remove('active')
+    } else {
+      this.view.noFavSvg.classList.add('active')
+      this.view.favSvg.classList.remove('active')
+    }
   }
 
   private _addToCart() {
