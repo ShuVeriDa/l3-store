@@ -4,6 +4,7 @@ import { formatPrice } from '../../utils/helpers';
 import { ProductData } from 'types';
 import html from './productDetail.tpl.html';
 import { cartService } from '../../services/cart.service';
+import {analysisService} from "../../services/analysis.service";
 
 class ProductDetail extends Component {
   more: ProductList;
@@ -41,7 +42,17 @@ class ProductDetail extends Component {
       .then((res) => res.json())
       .then((secretKey) => {
         this.view.secretKey.setAttribute('content', secretKey);
+
+        const payload = {
+          ...this.product,
+          secretKey
+        }
+
+        const typeEvent = Object.keys(this.product?.log).length > 0 ? 'viewCardPromo' : "viewCard"
+
+        analysisService.sendEvent(typeEvent, payload)
       });
+
 
     fetch('/api/getPopularProducts')
       .then((res) => res.json())
@@ -50,11 +61,18 @@ class ProductDetail extends Component {
       });
   }
 
-  private _addToCart() {
+  private async _addToCart() {
     if (!this.product) return;
 
-    cartService.addProduct(this.product);
-    this._setInCart();
+    const payload = this.product
+    try {
+      await cartService.addProduct(this.product);
+      this._setInCart();
+
+      await analysisService.sendEvent('addToCart', payload)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   private _setInCart() {

@@ -3,6 +3,7 @@ import { notFoundComp } from './modules/notFound/notFound';
 import { homepageComp } from './modules/homepage/homepage';
 import { productDetailComp } from './modules/productDetail/productDetail';
 import { checkoutComp } from './modules/checkout/checkout';
+import {analysisService} from "./services/analysis.service";
 
 const ROUTES = {
   '/': homepageComp,
@@ -22,11 +23,20 @@ export default class Router {
     window.addEventListener('hashchange', this.route.bind(this));
   }
 
-  route(e: any) {
+  async route(e: any) {
     e.preventDefault();
 
     // @ts-ignore
     const component = ROUTES[window.location.pathname] || notFoundComp;
+
+    const path = window.location.href
+    const payload = {url: path}
+
+    try {
+      await analysisService.sendEvent('route', payload)
+    } catch (e) {
+      console.log(e)
+    }
 
     component.attach(this.$appRoot);
     component.render();
