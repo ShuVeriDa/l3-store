@@ -22,11 +22,7 @@ class ProductDetail extends Component {
     const productId = Number(urlParams.get('id'));
     const userId = await userService.getId()
 
-    const productResp = await fetch(`/api/getProduct?id=${productId}`, {
-      headers: {
-        'x-userid': userId
-      }
-    });
+    const productResp = await fetch(`/api/getProduct?id=${productId}`);
     this.product = await productResp.json();
 
     if (!this.product) return;
