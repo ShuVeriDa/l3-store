@@ -20,8 +20,9 @@ class ProductDetail extends Component {
   async render() {
     const urlParams = new URLSearchParams(window.location.search);
     const productId = Number(urlParams.get('id'));
+    //
     const userId = await userService.getId()
-
+    //
     const productResp = await fetch(`/api/getProduct?id=${productId}`);
     this.product = await productResp.json();
 
@@ -46,6 +47,7 @@ class ProductDetail extends Component {
       });
 
     fetch('/api/getPopularProducts', {
+        //
         headers: {
           'x-userid': userId
         }

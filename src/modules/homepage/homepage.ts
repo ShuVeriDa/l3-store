@@ -16,11 +16,13 @@ class Homepage extends Component {
   }
 
   async render() {
+    //
     const userId = await userService.getId()
     fetch('/api/getPopularProducts', {
         headers: {
           'x-userid': userId,
         }
+  //
   })
       .then((res) => res.json())
       .then((products) => {
