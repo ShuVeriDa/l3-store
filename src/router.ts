@@ -10,7 +10,9 @@ const ROUTES = {
   '/catalog': catalogComp,
   '/product': productDetailComp,
   '/checkout': checkoutComp,
+  //
   '/search': searchTipsComp
+//
 };
 
 export default class Router {
