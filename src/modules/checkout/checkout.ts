@@ -8,12 +8,14 @@ import {analysisService} from "../../services/analysis.service";
 
 class Checkout extends Component {
   products!: ProductData[];
+  //
   totalPrice: Number
 
   constructor(props: any) {
     super(props);
     this.totalPrice = 0
   }
+  //
 
   async render() {
     this.products = await cartService.get();
@@ -31,12 +33,14 @@ class Checkout extends Component {
 
     const totalPrice = this.products.reduce((acc, product) => (acc += product.salePriceU), 0);
     this.view.price.innerText = formatPrice(totalPrice);
+    //
     this.totalPrice = totalPrice
-
+    //
     this.view.btnOrder.onclick = this._makeOrder.bind(this);
   }
 
   private async _makeOrder() {
+    //
     const productIds = this.products.map(item => item.id)
 
     const payload = {
@@ -58,6 +62,7 @@ class Checkout extends Component {
     } finally {
       window.location.href = '/?isSuccessOrder';
     }
+  //
   }
 }
 

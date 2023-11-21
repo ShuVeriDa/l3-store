@@ -42,7 +42,7 @@ class ProductDetail extends Component {
       .then((res) => res.json())
       .then((secretKey) => {
         this.view.secretKey.setAttribute('content', secretKey);
-
+        //
         const payload = {
           ...this.product,
           secretKey
@@ -51,6 +51,7 @@ class ProductDetail extends Component {
         const typeEvent = Object.keys(this.product?.log).length > 0 ? 'viewCardPromo' : "viewCard"
 
         analysisService.sendEvent(typeEvent, payload)
+      //
       });
 
 
@@ -64,6 +65,7 @@ class ProductDetail extends Component {
   private async _addToCart() {
     if (!this.product) return;
 
+    //
     const payload = this.product
     try {
       await cartService.addProduct(this.product);
@@ -73,6 +75,7 @@ class ProductDetail extends Component {
     } catch (error) {
       console.log(error)
     }
+  //
   }
 
   private _setInCart() {

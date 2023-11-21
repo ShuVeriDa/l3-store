@@ -29,6 +29,7 @@ export default class Router {
     // @ts-ignore
     const component = ROUTES[window.location.pathname] || notFoundComp;
 
+    //
     const path = window.location.href
     const payload = {url: path}
 
@@ -37,6 +38,7 @@ export default class Router {
     } catch (e) {
       console.log(e)
     }
+    //
 
     component.attach(this.$appRoot);
     component.render();
