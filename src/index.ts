@@ -7,7 +7,9 @@ import {favoriteService} from "./services/favorite.service";
 new Router();
 cartService.init();
 userService.init();
+//
 favoriteService.init()
+//
 
 setTimeout(() => {
   document.body.classList.add("is__ready");
